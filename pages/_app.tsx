@@ -14,8 +14,9 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="og:title" content="whale homepage" />
         
         <title>새 탭</title>
-      </Head>
+      </Head >
 
       <Component {...pageProps} />
     </>)
 }
+
