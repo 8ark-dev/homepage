@@ -1,33 +1,12 @@
 import classNames from 'classnames';
-import { useEffect, useState } from 'react';
 
 import { Container } from '../components/Container';
-import styled from '@emotion/styled';
-import dayjs from 'dayjs';
+import { Timer } from '@/components/Timer';
 
-const enToday = {
-  Mon: '월요일',
-  Tue: '화요일',
-  Wed: '수요일',
-  Thu: '목요일',
-  Fri: '금요일',
-  Sat: '토요일',
-  Sun: '일요일',
-};
+import styled from '@emotion/styled';
 
 export default function Home() {
-  const [timer, setTimer] = useState(dayjs().format('YYYY-MM-DD ddd HH:mm:ss'));
 
-  useEffect(() => {
-    const counter = setInterval(() => {
-      setTimer(dayjs().format('YYYY-MM-DD ddd HH:mm:ss'));
-    }, 1000);
-
-    //console.log('timer:', timer.split(' '));
-    return () => {
-      clearInterval(counter);
-    };
-  }, []);
 
   return (
     <BaseContainer>
@@ -47,37 +26,12 @@ export default function Home() {
 
         {/* 타이머 및 슬라이더 */}
         <div className="timer-container">
-          {/* 시간 저장 */}
-          <div>
-            {/* 시간 */}
-            <div>
-              {/* 12시간제로 */}
-              {timer.split(' ')[2].split(':')[0] >= '12'
-                ? parseInt(timer.split(' ')[2].split(':')[0]) - 12
-                : timer.split(' ')[2].split(':')[0]}
-              :{timer.split(' ')[2].split(':')[1]}
-            </div>
-
-            {/* 오전 오후 / 초 */}
-            <div>
-              <div>
-                {timer.split(' ')[2].split(':')[0] >= '12' ? 'PM' : 'AM'}
-              </div>
-
-              <div>{timer.split(' ')[2].split(':')[2]}</div>
-            </div>
-          </div>
-          {/* 날짜 저장 */}
-          <div>
-            {timer.split(' ')[0].split('-')[0]}년
-            {timer.split(' ')[0].split('-')[1]}월
-            {timer.split(' ')[0].split('-')[2]}일
-            {timer.split(' ')[1] === 'Mon' ? '월요일' : ''}
-          </div>
+          <Timer/>
         </div>
       </div>
 
       {/* 하단 우측 메뉴 + 좌측 카피라이트*/}
+      {/* https://store.whale.naver.com/detail/bec154a88dd44b68adc050eb0e20c00f */}
       <div></div>
     </BaseContainer>
   );
@@ -121,7 +75,7 @@ const BaseContainer = styled(Container)({
       color: 'white',
       fontSize: '2rem',
 
-      marginTop: '10%',
+      marginTop: '8%',
     },
   },
 
@@ -133,6 +87,7 @@ const BaseContainer = styled(Container)({
     height: '100vh',
 
     backgroundColor: 'rgba(0, 0, 0, 0.2)',
+    background: 'linear-gradient( to bottom, rgba(0, 0, 0, 0.2) 80%, rgba(0, 0, 0, 0.7) )'
   },
 });
 
@@ -160,7 +115,7 @@ const SearchBox = styled.div({
     position: 'relative',
     right: '29%',
 
-    fontWeight: 'extra-bold',
+    fontWeight: 'bolder',
 
     color: 'white',
   },
@@ -172,9 +127,10 @@ const SearchBox = styled.div({
     boxSizing: 'border-box',
 
     backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    boxShadow: '5px 5px 10px rgba(0, 0, 0, 0.3)',
 
     border: 'none',
-    borderRadius: '5px',
+    borderRadius: '10px',
     paddingLeft: '4rem',
 
     fontWeight: 'lighter',
