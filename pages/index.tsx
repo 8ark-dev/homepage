@@ -12,20 +12,33 @@ export default function Home() {
   return (
     <BaseContainer>
 
-      <div className='author'>
+      <div className='author' onClick={() => {
+        window.open('https://store.whale.naver.com/detail/bec154a88dd44b68adc050eb0e20c00f', '_self');
+      }}>
         <div style={
           {
             marginBottom: '10px',
             color: 'white',
           }
         }>Summer Memories</div>
-        <div>권희정</div>
+        <div>권희정 </div>
       </div>
 
 
       <div className="background" />
       {/* 상단 우측 사용 의견 */}
-      <div></div>
+      <div className='opinion' onClick={() =>{
+        window.open('https://forum.whale.naver.com/', '_self');
+      }}>
+        <div>
+          <img
+            src='/images/opinion.png'
+            alt='사용 의견'
+          />
+        </div>
+        <p>사용 의견</p>
+
+      </div>
 
       {/* 가운데 메인 콘텐츠 */}
       <div className={classNames('mid-container')}>
@@ -42,9 +55,6 @@ export default function Home() {
           <Timer />
         </div>
       </div>
-
-      {/* 하단 우측 메뉴 + 좌측 카피라이트*/}
-      {/* https://store.whale.naver.com/detail/bec154a88dd44b68adc050eb0e20c00f */}
     </BaseContainer>
   );
 }
@@ -113,8 +123,8 @@ const BaseContainer = styled(Container)({
     fontWeight: 'lighter',
     fontSize: '0.8rem',
 
-    zIndex: 1, 
-    
+    zIndex: 1,
+
     transition: 'opacity 2s ease-in-out',
     //hover 시 opacity 조정
     '&:hover': {
@@ -136,6 +146,64 @@ const BaseContainer = styled(Container)({
     '& ~ .mid-container': {
       transition: 'opacity 1s ease-in-out',
     },
+  },
+
+  '& .opinion': {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+
+    display: 'flex',
+    flexDirection: 'row-reverse',
+    justifyContent: 'center',
+    alignItems: 'center',
+
+    zIndex: 1,
+
+    '& p': {
+      color: 'white',
+      fontWeight: 'lighter',
+      fontSize: '0.8rem',
+
+      position: 'relative',
+      right: '-150px',
+    },
+    '& div': {
+      width: '40px',
+      height: '40px',
+
+      marginLeft: '10px',
+      borderRadius: '5px',
+
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+
+      zIndex: 1,
+
+      '&:hover': {
+        cursor: 'pointer',
+        backgroundColor: 'rgba(255, 255, 255, 0.5)',
+        
+        //hover 시 위의 p태그를 우측에서 날아오는 애니메이션
+        '& ~ p' :{
+          right: '0px',
+          transition: 'right 0.3s ease-in-out',
+        }
+      },
+
+      '& ~ p':{
+        transition: 'right 0.3s ease-in-out',
+      },
+
+      '& img': {
+        width: '25px',
+        height: '25px',
+
+        opacity: '0.8',
+      }
+
+    }
   }
 });
 
