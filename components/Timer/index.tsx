@@ -1,13 +1,15 @@
 import styled from "@emotion/styled";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
+import koLocale from "dayjs/locale/ko";
+
 
 export const Timer = () => {
-    const [timer, setTimer] = useState(dayjs().format('YYYY-MM-DD ddd HH:mm:ss'));
-
+    const [timer, setTimer] = useState(dayjs());
     useEffect(() => {
         const counter = setInterval(() => {
-            setTimer(dayjs().format('YYYY-MM-DD ddd HH:mm:ss'));
+            //format으로 아래에서 해결하기
+            setTimer(dayjs());
         }, 1000);
 
         //console.log('timer:', timer.split(' '));
@@ -22,27 +24,21 @@ export const Timer = () => {
                 {/* 시간 */}
                 <div className="time-left">
                     {/* 12시간제로 */}
-                    {timer.split(' ')[2].split(':')[0] >= '12'
-                        ? parseInt(timer.split(' ')[2].split(':')[0]) - 12
-                        : timer.split(' ')[2].split(':')[0]}
-                    :{timer.split(' ')[2].split(':')[1]}
+                    {timer.format('hh : mm')}
                 </div>
 
                 {/* 오전 오후 / 초 */}
                 <div className="time-right">
                     <div>
-                        {timer.split(' ')[2].split(':')[0] >= '12' ? 'PM' : 'AM'}
+                        {timer.format('A')}
                     </div>
 
-                    <div className="sec">{timer.split(' ')[2].split(':')[2]}</div>
+                    <div className="sec">{timer.format('ss')}</div>
                 </div>
             </div >
             {/* 날짜 저장 */}
             <div className="date">
-                {timer.split(' ')[0].split('-')[0]}년 
-                {timer.split(' ')[0].split('-')[1]}월 
-                {timer.split(' ')[0].split('-')[2]}일 
-                {timer.split(' ')[1] === 'Mon' ? '월요일' : ''}
+                {timer.locale(koLocale).format('YYYY년 MM월 DD일 dddd')}
             </div >
         </TimerContainer>
     )
@@ -72,7 +68,7 @@ const TimerContainer = styled.div({
             width: '25%',
             height: '100%',
             
-            fontSize: '11rem',
+            fontSize: '9rem',
             fontWeight: 'bold',
 
             display: 'flex',

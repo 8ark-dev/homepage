@@ -55,6 +55,21 @@ export default function Home() {
           <Timer />
         </div>
       </div>
+
+      {/* 우측 하단  */}
+      <div className='option'>
+        {/* 위치 설정 버튼 */}
+        <div>@</div>
+
+        {/* 할 일 목록 */}
+        <div>할 일 목록</div>
+
+        {/* 즐겨찾기 */}
+        <div>즐겨찾기</div>
+
+        {/* 설정 */}
+        <div>@</div>
+      </div>
     </BaseContainer>
   );
 }
@@ -97,7 +112,7 @@ const BaseContainer = styled(Container)({
       color: 'white',
       fontSize: '2rem',
 
-      marginTop: '8%',
+      marginTop: '10%',
     },
   },
 
@@ -183,7 +198,7 @@ const BaseContainer = styled(Container)({
 
       '&:hover': {
         cursor: 'pointer',
-        backgroundColor: 'rgba(255, 255, 255, 0.5)',
+        backgroundColor: 'rgba(255, 255, 255, 0.3)',
         
         //hover 시 위의 p태그를 우측에서 날아오는 애니메이션
         '& ~ p' :{
@@ -203,6 +218,35 @@ const BaseContainer = styled(Container)({
         opacity: '0.8',
       }
 
+    }
+  },
+
+  '& .option': {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+
+    display: 'flex',
+
+    '& div': {
+      width: '40px',
+      height: '40px',
+
+      marginLeft: '10px',
+      borderRadius: '5px',
+
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+
+      zIndex: 1,
+
+      color: 'white',
+
+      '&:hover': {
+        cursor: 'pointer',
+        backgroundColor: 'rgba(255, 255, 255, 0.3)',
+      },
     }
   }
 });
