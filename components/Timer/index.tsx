@@ -29,11 +29,13 @@ export const Timer = () => {
 
                 {/* 오전 오후 / 초 */}
                 <div className="time-right">
-                    <div>
+                    <div className="time">
                         {timer.format('A')}
                     </div>
 
-                    <div className="sec">{timer.format('ss')}</div>
+                    <div className="not_time"/>
+
+                    <div className="sec time">{timer.format('ss')}</div>
                 </div>
             </div >
             {/* 날짜 저장 */}
@@ -80,18 +82,16 @@ const TimerContainer = styled.div({
         '& .time-right': {
             width: '4%',
             height: '100%',
-
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'center',
+            justifyContent: 'space-between',
             alignItems: 'center',
             
-            padding: '0 1rem',
 
             rowGap: '1rem',
 
 
-            '& div': {
+            '& .time': {
                 width: '100%',
                 height: '100%',
 
@@ -100,19 +100,28 @@ const TimerContainer = styled.div({
                 alignItems: 'center',
 
 
+                fontWeight: 'light',
                 fontSize: '3rem',
+
                 color: 'rgba(255,255,255,0.5)',
+            },
+
+            '& .not_time' :{
+                width: '100%',
+                height: '1px',
+
+                backgroundColor: 'rgba(255,255,255,0.3)',
             },
             
             '& .sec': {
                 width: '100%',
                 height: '100%',
                 fontWeight: 'lighter',
-
-                borderTop: '1px solid rgba(255,255,255,0.3)',
-
-                fontSize: '3rem',
                 color: 'white',
+
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
             }
         }
     },

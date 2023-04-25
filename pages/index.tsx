@@ -2,12 +2,21 @@ import classNames from 'classnames';
 
 import { Container } from '../components/Container';
 import { Timer } from '@/components/Timer';
+import { Settings, Target, HelpCircle } from '@geist-ui/icons';
 
 import styled from '@emotion/styled';
 import Link from 'next/link';
 
-export default function Home() {
+import { useState } from 'react';
 
+export default function Home() {
+  const [text, setText] = useState('');
+
+  const onKeyEnter  = (e) => {
+    if (e.key === 'Enter') {
+      window.open(`https://search.naver.com/search.naver?query=${text}`, '_self');
+    }
+  }
 
   return (
     <BaseContainer>
@@ -27,13 +36,12 @@ export default function Home() {
 
       <div className="background" />
       {/* 상단 우측 사용 의견 */}
-      <div className='opinion' onClick={() =>{
+      <div className='opinion' onClick={() => {
         window.open('https://forum.whale.naver.com/', '_self');
       }}>
         <div>
-          <img
-            src='/images/opinion.png'
-            alt='사용 의견'
+          <HelpCircle
+            color='white'
           />
         </div>
         <p>사용 의견</p>
@@ -44,7 +52,12 @@ export default function Home() {
       <div className={classNames('mid-container')}>
         {/* 검색 창 */}
         <SearchBox>
-          <input type="text" placeholder="검색어를 입력하세요" maxLength={25} />{' '}
+          <input type="text" placeholder="검색어를 입력하세요" maxLength={25}
+            onChange={(e) => {
+              setText(e.target.value);
+            }}
+            onKeyDown={onKeyEnter}
+          />
           <a href="https://www.naver.com" target="_self">
             N
           </a>
@@ -59,16 +72,20 @@ export default function Home() {
       {/* 우측 하단  */}
       <div className='option'>
         {/* 위치 설정 버튼 */}
-        <div>@</div>
+        <div className='icon'>
+          <Target />
+        </div>
 
         {/* 할 일 목록 */}
-        <div>할 일 목록</div>
+        <div className='text'>할 일 목록</div>
 
         {/* 즐겨찾기 */}
-        <div>즐겨찾기</div>
+        <div className='text'>즐겨찾기</div>
 
         {/* 설정 */}
-        <div>@</div>
+        <div className='icon'>
+          <Settings />
+        </div>
       </div>
     </BaseContainer>
   );
@@ -199,19 +216,19 @@ const BaseContainer = styled(Container)({
       '&:hover': {
         cursor: 'pointer',
         backgroundColor: 'rgba(255, 255, 255, 0.3)',
-        
+
         //hover 시 위의 p태그를 우측에서 날아오는 애니메이션
-        '& ~ p' :{
+        '& ~ p': {
           right: '0px',
           transition: 'right 0.3s ease-in-out',
         }
       },
 
-      '& ~ p':{
+      '& ~ p': {
         transition: 'right 0.3s ease-in-out',
       },
 
-      '& img': {
+      '& > *': {
         width: '25px',
         height: '25px',
 
@@ -223,16 +240,30 @@ const BaseContainer = styled(Container)({
 
   '& .option': {
     position: 'absolute',
-    bottom: 20,
-    right: 20,
+    bottom: 30,
+    right: 30,
 
     display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
 
-    '& div': {
-      width: '40px',
-      height: '40px',
+    color: 'white',
+    fontSize: '0.8rem',
+    fontWeight: 'lighter',
 
-      marginLeft: '10px',
+    '& div:hover': {
+      cursor: 'pointer',
+      backgroundColor: 'rgba(255, 255, 255, 0.3)',
+    },
+
+    '& .icon': {
+      width: '30px',
+      height: '30px',
+
+      boxSizing: 'border-box',
+      padding: '5px',
+
+      marginLeft: '5px',
       borderRadius: '5px',
 
       display: 'flex',
@@ -240,14 +271,19 @@ const BaseContainer = styled(Container)({
       alignItems: 'center',
 
       zIndex: 1,
+    },
 
-      color: 'white',
+    '& .text': {
+      width: '70px',
+      height: '30px',
 
-      '&:hover': {
-        cursor: 'pointer',
-        backgroundColor: 'rgba(255, 255, 255, 0.3)',
-      },
-    }
+      marginLeft: '10px',
+      borderRadius: '5px',
+
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
   }
 });
 
