@@ -1,20 +1,32 @@
 import classNames from 'classnames';
 
 import { Container } from '../components/Container';
+import { TodoModal } from '@/components/Todo/modal';
+import { Todo } from '@/components/Todo';
 import { Timer } from '@/components/Timer';
-import { Settings, Target, HelpCircle } from '@geist-ui/icons';
 
+import { Settings, Target, HelpCircle } from '@geist-ui/icons';
 import styled from '@emotion/styled';
 import Link from 'next/link';
 
 import { useState } from 'react';
 
+const Links = [
+  'https://whale-store.pstatic.net/20220712_252/1657621381328rppU4_JPEG/742483520452.jpeg',
+  'https://whale-store.pstatic.net/20220712_39/16576213813075atU5_JPEG/386280053685.jpeg',
+  'https://whale-store.pstatic.net/20220712_49/1657621381331w5tiO_JPEG/1604987781540.jpeg',
+  'https://whale-store.pstatic.net/20220712_236/1657621381337AvvcW_JPEG/228759100076.jpeg',
+]
+
 export default function Home() {
   const [text, setText] = useState('');
+  const [istodo, setIstodo] = useState(false);
 
-  const onKeyEnter  = (e) => {
-    if (e.key === 'Enter') {
+  const onKeyEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && text.trim() !== '') {
       window.open(`https://search.naver.com/search.naver?query=${text}`, '_self');
+
+      setText('');
     }
   }
 
@@ -53,7 +65,7 @@ export default function Home() {
         {/* 검색 창 */}
         <SearchBox>
           <input type="text" placeholder="검색어를 입력하세요" maxLength={25}
-            onChange={(e) => {
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setText(e.target.value);
             }}
             onKeyDown={onKeyEnter}
@@ -77,7 +89,17 @@ export default function Home() {
         </div>
 
         {/* 할 일 목록 */}
-        <div className='text'>할 일 목록</div>
+        <div className='text' onClick={() => {
+          setIstodo(!istodo);
+        }}><Todo todonum={1} />        </div>
+        {istodo &&
+        <div
+          className='modal'
+        >
+          <TodoModal />
+        </div>
+        }
+
 
         {/* 즐겨찾기 */}
         <div className='text'>즐겨찾기</div>
@@ -96,13 +118,10 @@ const BaseContainer = styled(Container)({
   height: '100%',
   minHeight: '100vh',
 
-  backgroundImage:
-    'url(https://whale-store.pstatic.net/20220712_39/16576213813075atU5_JPEG/386280053685.jpeg)',
+  backgroundImage: `url(${Links[Math.floor(Math.random() * Links.length)]})`,
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   backgroundRepeat: 'no-repeat',
-
-  overflow: 'hidden',
 
   zIndex: -1,
 
@@ -163,27 +182,21 @@ const BaseContainer = styled(Container)({
       cursor: 'pointer',
       color: 'rgba(255, 255, 255, 1)',
     },
-    '&:hover ~ .background': {
+    '&:hover ~ .background, &:hover ~ .mid-container, &:hover ~ .opinion, &:hover ~ .option': {
       opacity: 0,
       transition: 'opacity 1s ease-in-out',
     },
-    '&:hover ~ .mid-container': {
-      opacity: 0,
+    '& ~ .background, & ~ .mid-container, & ~ .opinion, & ~ .option': {
       transition: 'opacity 1s ease-in-out',
     },
 
-    '& ~ .background': {
-      transition: 'opacity 1s ease-in-out',
-    },
-    '& ~ .mid-container': {
-      transition: 'opacity 1s ease-in-out',
-    },
   },
 
   '& .opinion': {
     position: 'absolute',
     top: 10,
     right: 10,
+    overflow: 'hidden',
 
     display: 'flex',
     flexDirection: 'row-reverse',
@@ -251,7 +264,9 @@ const BaseContainer = styled(Container)({
     fontSize: '0.8rem',
     fontWeight: 'lighter',
 
-    '& div:hover': {
+
+    //modal 제외 영역 hover 시 opacity 조정 modal 클래스 제외
+    '& > div:hover:not(.modal)': {
       cursor: 'pointer',
       backgroundColor: 'rgba(255, 255, 255, 0.3)',
     },

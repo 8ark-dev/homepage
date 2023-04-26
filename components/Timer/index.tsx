@@ -57,6 +57,9 @@ const TimerContainer = styled.div({
 
     zIndex: 1, //배경 이미지보다 위에 있어야 함
 
+    '&:hover': {
+        cursor: 'default',
+    },
 
     '& .time': {
         width: '100%',
