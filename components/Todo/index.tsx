@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export const Todo = ( {todonum} ) => {
+export const Todo = ( {todonum}) => {
   return (
     <TodoContainer
     >

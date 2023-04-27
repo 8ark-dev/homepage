@@ -1,14 +1,73 @@
 import styled from '@emotion/styled';
-import React from 'react';
+import { useEffect, useState } from 'react';
 
 export const TodoModal = () => {
+  const [text, setText] = useState('');
+  const [todos, setTodos] = useState<string[]>([]);
+
+  useEffect(() => {
+    //localStorage에서 불러오기
+    const tempTodo = localStorage.getItem('todos');
+    console.log("res:",tempTodo);
+    setTodos(tempTodo ? JSON.parse(tempTodo) : []);
+
+    console.log(todos);
+  }, []);
+
+  useEffect(() => {
+    //localStorage에 저장하기
+    //불러올 때 코드와 겹치면 안됨
+    localStorage.setItem('todos', JSON.stringify(todos));
+  }, [todos]);
+
+  const onKeyEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (text !== '') {
+        //console.log(text);
+        setTodos([...todos, text]);
+        setText('');
+      }
+    }
+  };
+
   return (
     <ModalContainer>
-      <p>할 일 목록</p>
+      <p>할 일 목록 {
+        todos.length > 0 ? todos.length : ''
+      }</p>
+      <div style={{
+        height: '80%',
+        overflowY: 'scroll',
+      }}>
+        {todos.map((todo, index) => (
+          <Todos key={index}>
+            <p>{todo}</p>
+            <div onClick={() => {
+              //제거
+              setTodos(todos.filter((_, i) => i !== index));
+            }}>x</div>
+          </Todos>
+        ))}
+      </div>
 
-      <div>
-        <a>+</a>
-        <input type="text" placeholder="할 일을 입력하세요" />
+      <div className='input-container'>
+        <a
+          onClick={() => {
+            if (text !== '') {
+              console.log(text);
+              setText('');
+              setTodos([...todos, text]);
+
+              alert('추가되었습니다.');
+            }
+          }}
+        >+</a>
+        <input type="text" placeholder="할 일을 입력하세요"
+          value={text} 
+          onChange={(e) => setText(e.target.value)}
+          onKeyDown={onKeyEnter}
+        />
       </div>
     </ModalContainer>
   );
@@ -20,6 +79,7 @@ const ModalContainer = styled.div({
 
   borderRadius: '20px',
   boxSizing: 'border-box',
+
   padding: '20px',
 
   color: 'black',
@@ -37,7 +97,7 @@ const ModalContainer = styled.div({
 
   '&>p': {
     width: '100%',
-    height: '30px',
+    height: '10px',
   },
 
   '&>div': {
@@ -55,7 +115,7 @@ const ModalContainer = styled.div({
 
       position: 'absolute',
       left: 10,
-      top: 6,
+      top: 8,
 
       display: 'flex',
       justifyContent: 'center',
@@ -80,6 +140,8 @@ const ModalContainer = styled.div({
         outline: 'none',
       },
     },
+
+
   },
 
   animation: 'modalOpen 0.1s ease-in-out',
@@ -93,4 +155,27 @@ const ModalContainer = styled.div({
       height: '350px',
     },
   },
+});
+
+
+const Todos = styled.div({
+  width: '100%',
+  height: '35px',
+
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+
+  margin: '5px 0',
+  padding: '0 20px',
+
+  boxSizing: 'border-box',
+
+  fontWeight: 'bolder',
+
+  '&:hover': {
+    opacity: 0.8,
+    backgroundColor: 'rgba(0,0,0,0.1)',
+  },
+
 });
