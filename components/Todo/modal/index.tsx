@@ -8,10 +8,8 @@ export const TodoModal = () => {
   useEffect(() => {
     //localStorage에서 불러오기
     const tempTodo = localStorage.getItem('todos');
-    console.log("res:",tempTodo);
-    setTodos(tempTodo ? JSON.parse(tempTodo) : []);
-
-    console.log(todos);
+    //prev로 이전 상태 메모
+    setTodos(prev => prev.concat(tempTodo ? JSON.parse(tempTodo) : []));
   }, []);
 
   useEffect(() => {
@@ -20,7 +18,7 @@ export const TodoModal = () => {
     localStorage.setItem('todos', JSON.stringify(todos));
   }, [todos]);
 
-  const onKeyEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const onKeyEnterModal = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       if (text !== '') {
@@ -66,7 +64,7 @@ export const TodoModal = () => {
         <input type="text" placeholder="할 일을 입력하세요"
           value={text} 
           onChange={(e) => setText(e.target.value)}
-          onKeyDown={onKeyEnter}
+          onKeyDown={onKeyEnterModal}
         />
       </div>
     </ModalContainer>
