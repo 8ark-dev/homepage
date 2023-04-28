@@ -24,9 +24,8 @@ export default function Home() {
 
   const onKeyEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && text.trim() !== '') {
-      window.open(`https://search.naver.com/search.naver?query=${text}`, '_self');
-
-      setText('');
+      e.preventDefault();
+      window.open(`https://search.naver.com/search.naver?query=${t}`, '_self');
     }
   }
 

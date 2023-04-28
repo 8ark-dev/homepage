@@ -5,17 +5,23 @@ export const TodoModal = () => {
   const [text, setText] = useState('');
   const [todos, setTodos] = useState<string[]>([]);
 
+  //false로 초기화
+  const [ischecked, setIschecked] = useState<boolean[]>([]);
+
   useEffect(() => {
     //localStorage에서 불러오기
     const tempTodo = localStorage.getItem('todos');
     //prev로 이전 상태 메모
-    setTodos(prev => prev.concat(tempTodo ? JSON.parse(tempTodo) : []));
+    //setTodos(prev => prev.concat(tempTodo ? JSON.parse(tempTodo) : []));
   }, []);
 
   useEffect(() => {
     //localStorage에 저장하기
     //불러올 때 코드와 겹치면 안됨
-    localStorage.setItem('todos', JSON.stringify(todos));
+   localStorage.setItem('todos', JSON.stringify(todos));
+   localStorage.setItem('total', JSON.stringify(
+      todos.length - ischecked.filter((v) => v).length
+    ));
   }, [todos]);
 
   const onKeyEnterModal = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -23,7 +29,9 @@ export const TodoModal = () => {
       e.preventDefault();
       if (text !== '') {
         //console.log(text);
-        setTodos([...todos, text]);
+        //이렇게 => 를 써서 넘김
+        setTodos(todos => todos.concat(text));
+        setIschecked(ischecked => ischecked.concat(false));
         setText('');
       }
     }
@@ -32,7 +40,8 @@ export const TodoModal = () => {
   return (
     <ModalContainer>
       <p>할 일 목록 {
-        todos.length > 0 ? todos.length : ''
+        //ischㄷecked가 true인 개수 제외
+        (todos.length - ischecked.filter((v) => v).length) > 0 && todos.length - ischecked.filter((v) => v).length
       }</p>
       <div style={{
         height: '80%',
@@ -40,10 +49,26 @@ export const TodoModal = () => {
       }}>
         {todos.map((todo, index) => (
           <Todos key={index}>
-            <p>{todo}</p>
-            <div onClick={() => {
+            <div className='checkbox' 
+            style = {{
+              backgroundColor: ischecked[index] ? '#05c3a7' : 'white',
+              border: '1px solid #05c3a7',
+            }}
+            onClick={() => {
+              //체크
+              setIschecked(ischecked.map((_, i) => i === index ? !ischecked[index] : ischecked[i]));
+              //console.log(ischecked)
+            }}
+            />
+            <p style={{
+              width: '80%',
+              textDecoration: ischecked[index] ? 'line-through' : 'none',
+            }}>{todo}</p>
+            <div 
+            onClick={() => {
               //제거
               setTodos(todos.filter((_, i) => i !== index));
+              setIschecked(ischecked.filter((_, i) => i !== index));
             }}>x</div>
           </Todos>
         ))}
@@ -171,9 +196,21 @@ const Todos = styled.div({
 
   fontWeight: 'bolder',
 
+  overflow: 'hidden',
+
   '&:hover': {
     opacity: 0.8,
     backgroundColor: 'rgba(0,0,0,0.1)',
   },
 
+  '& .checkbox': {
+    width: '20px',
+    height: '20px',
+
+    backgroundColor: '#05c3a7',
+
+    //만약 ischeck면 체크표시
+    borderRadius: '50%',
+
+  }
 });

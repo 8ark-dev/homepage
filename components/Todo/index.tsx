@@ -1,11 +1,15 @@
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
 
-export const Todo = ( {todonum}) => {
+export const Todo = () => {
+  const [totallen, setTotallen] = useState<number>(0);
+  useEffect(() => {
+    setTotallen(Number(localStorage.getItem('total')));
+  },[totallen])
   return (
     <TodoContainer
     >
-      할 일 목록 <strong>{todonum || false}</strong>
+      할 일 목록 <strong>{totallen || false}</strong>
     </TodoContainer>
   )
 }
