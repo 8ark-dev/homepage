@@ -12,7 +12,7 @@ export const TodoModal = () => {
     //localStorage에서 불러오기
     const tempTodo = localStorage.getItem('todos');
     //prev로 이전 상태 메모
-    //setTodos(prev => prev.concat(tempTodo ? JSON.parse(tempTodo) : []));
+    setTodos(prev => prev.concat(tempTodo ? JSON.parse(tempTodo) : []));
   }, []);
 
   useEffect(() => {
@@ -112,7 +112,7 @@ const ModalContainer = styled.div({
   position: 'absolute',
 
   bottom: 35,
-  right: 125,
+  right: 45,
 
   display: 'flex',
   flexDirection: 'column',

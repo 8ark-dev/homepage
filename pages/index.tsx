@@ -9,7 +9,8 @@ import { Settings, Target, HelpCircle } from '@geist-ui/icons';
 import styled from '@emotion/styled';
 import Link from 'next/link';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { LocationModal } from '@/components/Location/Modal';
 
 const Links = [
   'https://whale-store.pstatic.net/20220712_252/1657621381328rppU4_JPEG/742483520452.jpeg',
@@ -21,11 +22,12 @@ const Links = [
 export default function Home() {
   const [text, setText] = useState('');
   const [istodo, setIstodo] = useState(false);
+  const [islocation, setIslocation] = useState(false);
 
   const onKeyEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && text.trim() !== '') {
       e.preventDefault();
-      window.open(`https://search.naver.com/search.naver?query=${t}`, '_self');
+      window.open(`https://search.naver.com/search.naver?query=${text}`, '_self');
     }
   }
 
@@ -84,13 +86,24 @@ export default function Home() {
       <div className='option'>
         {/* 위치 설정 버튼 */}
         <div className='icon'>
-          <Target />
+            <Target 
+              onClick={() => {
+                setIslocation(!islocation);
+              }}
+            />
+        </div>
+        <div className='modal'>
+          {islocation && <LocationModal/>}
         </div>
 
         {/* 할 일 목록 */}
-        <div className='text' onClick={() => {
+        <div 
+        className='text' 
+        onClick={() => {
           setIstodo(!istodo);
-        }}><Todo todonum={1} />        </div>
+        }}>
+          <Todo/>        
+        </div>
         {istodo &&
         <div
           className='modal'
@@ -98,10 +111,6 @@ export default function Home() {
           <TodoModal />
         </div>
         }
-
-
-        {/* 즐겨찾기 */}
-        <div className='text'>즐겨찾기</div>
 
         {/* 설정 */}
         <div className='icon'>
@@ -272,7 +281,9 @@ const BaseContainer = styled(Container)({
 
     '& .icon': {
       width: '30px',
-      height: '30px',
+      height: '30px', 
+
+      position: 'relative',
 
       boxSizing: 'border-box',
       padding: '5px',
